@@ -29,10 +29,7 @@ namespace CryptoQuotes.Infrastructure
                 await userManager.CreateAsync(identityUser, "qazwsX123@");
 
                 using var unitOfWork = unitOfWorkFactory.Create();
-                var user = new User()
-                {
-                    IdentityUser = identityUser
-                };
+                var user = new User(identityUser);
 
                 await userRepository.Add(user);
 

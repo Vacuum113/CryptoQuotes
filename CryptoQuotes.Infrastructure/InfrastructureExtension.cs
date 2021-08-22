@@ -3,6 +3,8 @@ using CryptoQuotes.Infrastructure.Identity;
 using CryptoQuotes.Infrastructure.Repositories;
 using Domain;
 using Domain.Entities.AppUser;
+using Domain.Entities.Cryptocurrency;
+using Domain.Entities.CryptoQuote;
 using Domain.Entities.IdentityAppUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,8 @@ namespace CryptoQuotes.Infrastructure
 			return services
 					.AddScoped<IIdentityAppUserRepository, IdentityAppUserRepository>()
 					.AddScoped<IAppUserRepository, AppUserRepository>()
+					.AddScoped<ICryptocurrencyRepository, CryptocurrencyRepository>()
+					.AddScoped<ICryptoQuoteRepository, CryptoQuoteRepository>()
 				;
 		}
 		

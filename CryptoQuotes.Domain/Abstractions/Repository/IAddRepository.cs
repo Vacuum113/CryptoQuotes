@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.Abstractions.Repository
 {
@@ -6,5 +7,6 @@ namespace Domain.Abstractions.Repository
         where TEntity : IEntity<int>
     {
         Task Add(TEntity entity);
+        Task AddRange(IEnumerable<TEntity> addedCc);
     }
 }

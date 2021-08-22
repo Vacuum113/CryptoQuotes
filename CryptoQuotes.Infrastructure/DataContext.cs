@@ -24,14 +24,14 @@ namespace CryptoQuotes.Infrastructure
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
         
-        public void MarkAsChanged<T>(T entity)
-        {
-            // ignore if record just inserted
-            if (Entry(entity).State == EntityState.Added)
-                return;
-
-            Entry(entity).State = EntityState.Modified;
-        }
+        // public void MarkAsChanged<T>(T entity)
+        // {
+        //     // ignore if record just inserted
+        //     if (Entry(entity).State == EntityState.Added)
+        //         return;
+        //
+        //     Entry(entity).State = EntityState.Modified;
+        // }
 
         public IUnitOfWork Create()
         {

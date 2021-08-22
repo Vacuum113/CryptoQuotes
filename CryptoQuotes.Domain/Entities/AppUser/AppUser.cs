@@ -6,10 +6,20 @@ namespace Domain.Entities.AppUser
 {
     public class User : IEntity<int>
     {
-        public int Id { get; set; }
+        internal User()
+        {
+            
+        }
+        
+        public User(IIdentityUser identityUser)
+        {
+            IdentityUser = identityUser;
+        }
 
-        public int IdentityUserId { get; set; }
+        public int Id { get; private set; }
 
-        public IIdentityUser IdentityUser { get; set; }
+        public int IdentityUserId { get; private set; }
+
+        public IIdentityUser IdentityUser { get; private set; }
     }
 }

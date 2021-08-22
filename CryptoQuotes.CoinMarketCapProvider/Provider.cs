@@ -35,7 +35,7 @@ namespace Provider
 
 		public async Task<СryptocurrencyResponse> GetLatest()
 		{
-			var result = await _client.SendGet("cryptocurrency/listings/latest");
+			var result = await _client.SendGet("cryptocurrency/listings/latest?limit=5000");
 			return JsonConvert.DeserializeObject<СryptocurrencyResponse>(result, _settings);
 		}
 

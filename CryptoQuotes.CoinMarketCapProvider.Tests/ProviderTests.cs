@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Moq;
 using NUnit.Framework;
 using Provider;
 using Provider.Configuration;
+using Provider.Dtos;
 
 namespace CryptoQuotes.CoinMarketCapProvider.Tests
 {
@@ -33,11 +35,12 @@ namespace CryptoQuotes.CoinMarketCapProvider.Tests
             var provider = new CryptoQuotesProvider(new CryptoQuotesClient(new DefaultHttpClientFactory(), options.Object));
             var result = await provider.GetLatest();
             
-            Assert.Zero(result.Status.ErrorCode);
+            Assert.AreEqual(ResponseStatusCode.Success, result.Status.ErrorCode);
             Assert.Null(result.Status.ErrorMessage);
             Assert.NotZero(result.Data.Count);
             Assert.NotZero(result.Data.First().Quote.Usd.PercentChange_1h);
             Assert.NotZero(result.Data.First().Quote.Usd.PercentChange_24h);
+            Assert.AreNotEqual(DateTime.MinValue, result.Data.First().Quote.Usd.LastUpdated);
         }
 
         public sealed class DefaultHttpClientFactory : IHttpClientFactory

@@ -26,14 +26,16 @@ namespace CryptoQuotes.Infrastructure.Repositories
 			return await GetQuery().FirstOrDefaultAsync(u => u.Email == email);
 		}
 
-		protected override IQueryable<IdentityAppUser> GetQuery()
-		{
-			return base.GetQuery();
-		}
-
 		public Task Update(IIdentityUser entity)
 		{
-			DbContext.MarkAsChanged(entity);
+			GetSet().Update(entity as IdentityAppUser);
+
+			return Task.CompletedTask;
+		}
+
+		public Task UpdateRange(IEnumerable<IIdentityUser> entities)
+		{
+			GetSet().UpdateRange(entities.Cast<IdentityAppUser>());
 
 			return Task.CompletedTask;
 		}

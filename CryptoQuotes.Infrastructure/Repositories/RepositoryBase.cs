@@ -32,12 +32,21 @@ namespace CryptoQuotes.Infrastructure.Repositories
 
 		public Task Update(TDomainEntity entity)
 		{
-			DbContext.MarkAsChanged(entity);
+			GetSet().Update(entity);
 
 			return Task.CompletedTask;
 		}
 
-		public Task Add(TDomainEntity entity) => Task.FromResult(GetSet().Add((TDomainEntity) entity));
+		public Task UpdateRange(IEnumerable<TDomainEntity> entities)
+		{
+			GetSet().UpdateRange(entities);
+
+			return Task.CompletedTask;
+		}
+
+		public async Task Add(TDomainEntity entity) => await GetSet().AddAsync((TDomainEntity) entity);
+		public async Task AddRange(IEnumerable<TDomainEntity> entities) => await GetSet().AddRangeAsync(entities);
+		
 
 		protected virtual DbSet<TDomainEntity> GetSet() => DbContext.Set<TDomainEntity>();
 

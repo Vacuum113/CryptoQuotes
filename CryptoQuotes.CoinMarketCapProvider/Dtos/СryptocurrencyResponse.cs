@@ -29,11 +29,28 @@ namespace Provider.Dtos
 		public float PercentChange_1h { get; init; }
 		public float PercentChange_24h { get; init; }
 		public decimal MarketCap { get; init; }
+		public DateTime LastUpdated { get; init; }
 	}
 
 	public record Status
 	{
-		public int ErrorCode { get; init; }
+		public ResponseStatusCode ErrorCode { get; init; }
 		public string ErrorMessage { get; init; }
+	}
+
+	public enum ResponseStatusCode
+	{
+		Success = 0,
+		ApiKeyInvalid = 1001,
+		ApiKeyMissing = 1002,
+		ApiKeyPlanRequiresPayment = 1003,
+		ApiKeyPlanPaymentExpired = 1004,
+		ApiKeyRequired = 1005,
+		ApiKeyPlanNotAuthorized = 1006,
+		ApiKeyDisabled = 1007,
+		ApiKeyPlanMinuteRateLimitReached = 1008,
+		ApiKeyPlanDailyRateLimitReached = 1009,
+		ApiKeyPlanMonthlyRateLimitReached = 1010,
+		IpRateLimitReached = 1011
 	}
 }

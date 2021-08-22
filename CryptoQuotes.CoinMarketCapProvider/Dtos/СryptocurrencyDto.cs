@@ -2,10 +2,11 @@
 
 namespace Provider.Dtos
 {
-	public class CryptocurrencyDto
+	public record CryptocurrencyDto
 	{
-		public CryptocurrencyDto()
-		{
-		}
+		public int Id { get; init; }
+		public string Name { get; init; }
+		public int CoinMarketCapId { get; init; }
+		public string Symbol { get; init; }
 	}
 }
