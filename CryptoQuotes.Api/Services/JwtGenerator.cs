@@ -8,7 +8,7 @@ using Domain.Entities.IdentityAppUser;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Services
+namespace Api.Services
 {
     public class JwtGenerator : IJwtGenerator
 	{

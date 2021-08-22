@@ -1,12 +1,10 @@
-﻿using API.Helpers;
+﻿using Api.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace API.Controllers
+namespace Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class BaseController : ControllerBase
     {
         private IMediator _mediator;

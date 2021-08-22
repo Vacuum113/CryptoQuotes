@@ -5,7 +5,7 @@ using Application.UseCases.UserIdentity.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace Api.Controllers
 {
     [AllowAnonymous]
     public class UserController : BaseController
@@ -13,7 +13,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginQuery query)
         {
-            return Json(await Mediator.Send(query));
+	        return Json(await Mediator.Send(query));
         }
 
 		// [HttpPost("registration")]

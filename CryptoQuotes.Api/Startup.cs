@@ -1,4 +1,5 @@
-using API.Middleware;
+using Api.Extensions;
+using Api.Middleware;
 using Application;
 using CryptoQuotes.Background.TaskRunners;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Provider;
 using CryptoQuotes.Infrastructure;
 
-namespace API
+namespace Api
 {
     public class Startup
     {
@@ -27,7 +28,8 @@ namespace API
 		        .AddInfrastructure(Configuration.GetConnectionString("DatabaseConnection"))
 		        .AddProvider(Configuration.GetSection("CoinMarketCapProvider"))
 		        .AddTaskRunners()
-		        .AddApplication();
+		        .AddApplication()
+		        .AddMediator();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Helpers
+namespace Api.Helpers
 {
 	public class JsonActionResult : ContentResult
 	{
@@ -37,6 +37,7 @@ namespace API.Helpers
 		{
 			IgnoreNullValues = true,
 			IncludeFields = true,
+			
 		};
 
 		public static string Serialize(object o)

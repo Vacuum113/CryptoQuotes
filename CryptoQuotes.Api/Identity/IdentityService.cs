@@ -5,7 +5,7 @@ using Domain.Entities.AppUser;
 using Domain.Entities.IdentityAppUser;
 using Microsoft.AspNetCore.Http;
 
-namespace API.Identity
+namespace Api.Identity
 {
     internal class IdentityService : IIdentityService
     {
