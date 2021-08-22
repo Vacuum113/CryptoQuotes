@@ -1,3 +1,4 @@
+using CryptoQuotes.Background.TaskRunners.ImportCryptocurrencies;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CryptoQuotes.Background.TaskRunners
@@ -7,7 +8,8 @@ namespace CryptoQuotes.Background.TaskRunners
         public static IServiceCollection AddTaskRunners(this IServiceCollection services)
         {
             return services
-                .AddHostedService<BackgroundTaskRunner<ImportCryptocurrencies.ImportCryptocurrenciesTaskRunner>>();
+                .AddScoped<ImportCryptocurrenciesTaskRunner>()
+                .AddHostedService<BackgroundTaskRunner<ImportCryptocurrenciesTaskRunner>>();
         }
     }
 }

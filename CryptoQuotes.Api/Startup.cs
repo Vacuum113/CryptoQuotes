@@ -1,5 +1,6 @@
 using API.Middleware;
 using Application;
+using CryptoQuotes.Background.TaskRunners;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -25,6 +26,7 @@ namespace API
 		        .AddApi(Configuration["TokenKey"])
 		        .AddInfrastructure(Configuration.GetConnectionString("DatabaseConnection"))
 		        .AddProvider(Configuration.GetSection("CoinMarketCapProvider"))
+		        .AddTaskRunners()
 		        .AddApplication();
         }
 

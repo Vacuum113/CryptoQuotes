@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CryptoQuotes.Application\CryptoQuotes.Application.csproj" />
+    <ProjectReference Include="..\CryptoQuotes.Background.TaskRunners\CryptoQuotes.Background.TaskRunners.csproj" />
     <ProjectReference Include="..\CryptoQuotes.CoinMarketCapProvider\CryptoQuotes.CoinMarketCapProvider.csproj" />
     <ProjectReference Include="..\CryptoQuotes.Infrastructure\CryptoQuotes.Infrastructure.csproj" />
   </ItemGroup>
