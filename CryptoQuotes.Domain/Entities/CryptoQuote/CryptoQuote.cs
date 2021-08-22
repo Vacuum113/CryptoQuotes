@@ -25,7 +25,7 @@ namespace Domain.Entities.CryptoQuote
         public float PercentChangeOneHour { get; private set; }
         public float PercentChangeTwentyFourHours { get; private set; }
         public decimal MarketCap { get; private set; }
-        public DateTime LastUpdated { get; }
+        public DateTime LastUpdated { get; private set; }
         public bool IsActual { get; private set; }
         
         public Cryptocurrency.Cryptocurrency Cryptocurrency { get; private set; }

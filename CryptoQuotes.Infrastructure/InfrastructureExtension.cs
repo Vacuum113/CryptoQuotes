@@ -1,5 +1,7 @@
 ﻿using Application.Identity;
+using Application.UseCases.Queries.CryptocurrencyQuery;
 using CryptoQuotes.Infrastructure.Identity;
+using CryptoQuotes.Infrastructure.QueryHandlers;
 using CryptoQuotes.Infrastructure.Repositories;
 using Domain;
 using Domain.Entities.AppUser;
@@ -29,7 +31,6 @@ namespace CryptoQuotes.Infrastructure
 			identityBuilder.AddSignInManager<SignInManager<IdentityAppUser >>();
 			
 			return services
-				.AddAutoMapper(typeof(InfrastructureExtensions).Assembly)
 				.AddDbContext<DataContext>(options => options
 					.UseNpgsql(connectionsString,
 						ob => ob.MigrationsAssembly(typeof(DataContext).Assembly.FullName)))

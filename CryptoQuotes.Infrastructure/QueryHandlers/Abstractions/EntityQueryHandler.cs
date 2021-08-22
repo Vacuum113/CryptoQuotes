@@ -10,48 +10,59 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CryptoQuotes.Infrastructure.QueryHandlers.Abstractions
 {
-	public abstract class EntityQueryHandler<TRequest, TDto, TEntity>: IEntityQueryHandler<TRequest, TDto, TEntity>
-		where TRequest : IRequest<IEnumerable<TDto>>
+	public abstract class EntityQueryHandlerBase<TRequest, TResponse, TEntity>: IGetManyQueryHandler<TRequest, TResponse>
+		where TRequest : class
+		where TResponse : class
 		where TEntity: class, IEntity<int>
 	{
-		protected readonly DataContext _context;
-		protected readonly IMapper _mapper;
+		protected readonly DataContext Context;
+		protected readonly IMapper Mapper;
 
-		internal EntityQueryHandler(DataContext context, IMapper mapper)
+		internal EntityQueryHandlerBase(DataContext context, IMapper mapper)
 		{
-			_context = context;
-			_mapper = mapper;
+			Context = context;
+			Mapper = mapper;
 		}
 		
-		public async Task<IEnumerable<TDto>> Handle(TRequest request, CancellationToken cancellationToken)
+		public virtual async Task<GetManyResponse<TResponse>> Handle(EntityRequest<TRequest> request)
 		{
 			var query = GetQuery();
+			
 			query = Filter(query, request);
 			query = Sort(query, request);
-			var result = await query.ToListAsync(cancellationToken: cancellationToken);
-			var mappedEntities = new List<TDto>();
-			foreach (var entity in result)
-			{
-				mappedEntities.Add(MapEntity(entity));
-			}
+			
+			var count = await query.CountAsync();
+			
+			query = Paginate(query, request);
+			
+			var result = await query.ToListAsync();
+			
+			var mappedEntities = result
+				.Select(e => MapEntity(e))
+				.ToList();
 
-			return mappedEntities;
+			return new GetManyResponse<TResponse>(count, mappedEntities);
 		}
 
-		public TDto MapEntity(TEntity entity)
-		{
-			return _mapper.Map<TDto>(entity);
-		}
+		public abstract TResponse MapEntity(TEntity entity);
 
-		public IQueryable<TEntity> Sort(IQueryable<TEntity> query, TRequest request)
+		public virtual IQueryable<TEntity> Sort(IQueryable<TEntity> query, EntityRequest<TRequest> request)
 		{
 			return query;
 		}
+		
+		public virtual IQueryable<TEntity> Paginate(IQueryable<TEntity> query, EntityRequest<TRequest> request)
+		{
+			if (request.Start.HasValue && request.End.HasValue && request.Start >= 0 && request.End >= 0)
+				return query.Skip(request.Start.Value).Take(request.End.Value - request.Start.Value);
+			
+			return query;
+		}
 
-		public IQueryable<TEntity> GetQuery()
-			=> _context.Set<TEntity>();
+		public virtual IQueryable<TEntity> GetQuery()
+			=> Context.Set<TEntity>();
 
-		public virtual IQueryable<TEntity> Filter(IQueryable<TEntity> query, TRequest request) 
+		public virtual IQueryable<TEntity> Filter(IQueryable<TEntity> query, EntityRequest<TRequest> request) 
 			=> query;
 	}
 }
