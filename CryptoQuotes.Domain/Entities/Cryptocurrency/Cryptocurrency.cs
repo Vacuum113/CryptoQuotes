@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Abstractions;
 
 namespace Domain.Entities.Cryptocurrency
@@ -17,7 +18,7 @@ namespace Domain.Entities.Cryptocurrency
         public int CoinMarketCapId { get; private set; }
         public string Symbol { get; private set; }
         
-        public ICollection<CryptoQuote.CryptoQuote> CryptoQuote { get; } = new List<CryptoQuote.CryptoQuote>();
+        public ICollection<CryptoQuote.CryptoQuote> CryptoQuote { get; private set; } = new List<CryptoQuote.CryptoQuote>();
 
         public void SetName(string name)
         {
@@ -29,6 +30,11 @@ namespace Domain.Entities.Cryptocurrency
         {
             if (symbol != null)
                 Symbol = symbol;
+        }
+
+        public void SetCryptoQuote(IEnumerable<CryptoQuote.CryptoQuote> cryptoQuote)
+        {
+            CryptoQuote = cryptoQuote.ToList();
         }
     }
 }
