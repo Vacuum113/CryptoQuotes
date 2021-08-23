@@ -7,8 +7,7 @@ namespace Application.UseCases.UserIdentity.Registration
 	{
 		public RegistrationValidation()
 		{
-			RuleFor(x => x.UserName).NotEmpty();
-			RuleFor(x => x.Email).NotEmpty().EmailAddress();
+			RuleFor(x => x.Login).NotEmpty().EmailAddress();
 			RuleFor(x => x.Password).NotEmpty().Password();
 		}
 	}

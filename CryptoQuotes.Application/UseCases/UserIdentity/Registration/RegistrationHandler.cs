@@ -26,17 +26,12 @@ namespace Application.UseCases.UserIdentity.Registration
 
 		public async Task<UserIdentityModel> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			if ((await _identityAppUserRepository.GetByFilter(x => x.Email == request.Email)).Any())
+			if ((await _identityAppUserRepository.GetByFilter(x => x.Email == request.Login)).Any())
 			{
-				throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exist" });
+				throw new RestException(HttpStatusCode.BadRequest, new { Error = "Email already exist" });
 			}
 
-			if ((await _identityAppUserRepository.GetByFilter(x => x.UserName == request.UserName)).Any())
-			{
-				throw new RestException(HttpStatusCode.BadRequest, new { UserName = "UserName already exist" });
-			}
-
-			var user = _userFactory.Create(new IdentityAppUserFactoryEntity(request.Email, request.UserName, request.Password));
+			var user = _userFactory.Create(new IdentityAppUserFactoryEntity(request.Login, request.Password));
 
 			if (user != null)
 			{

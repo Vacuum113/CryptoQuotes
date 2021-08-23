@@ -19,7 +19,7 @@ namespace CryptoQuotes.Infrastructure
             var user = new IdentityAppUser()
             {
                 Email = entity.Email,
-                UserName = entity.UserName
+                UserName = entity.Email
             };
             
             var result = _userManager.CreateAsync(user, entity.Password).Result;
