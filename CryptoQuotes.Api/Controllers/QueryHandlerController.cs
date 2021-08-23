@@ -28,7 +28,7 @@ namespace Api.Controllers
 
             var result = await Mediator.SendAsync<GetManyResponse<TResponse>>(request);
 
-            return Json(result);
+            return Ok(result);
         }
     }
 }

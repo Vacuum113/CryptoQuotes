@@ -25,6 +25,7 @@ namespace CryptoQuotes.Infrastructure
 				o.Password.RequiredLength = 6;
 				o.Password.RequireUppercase = false;
 				o.Password.RequireNonAlphanumeric = false;
+				o.User.RequireUniqueEmail = true;
 			});
 			var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
 			identityBuilder.AddEntityFrameworkStores<DataContext>();

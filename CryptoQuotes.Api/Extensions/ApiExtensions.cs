@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using Api.Identity;
 using Api.Services;
 using Application.Identity;
@@ -19,14 +20,21 @@ namespace Api
     {
         public static IServiceCollection AddApi(this IServiceCollection services, string tokenKey)
         {
-            services.AddMvc(option =>
+            services.AddControllers(option =>
             {
                 option.EnableEndpointRouting = false;
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
                 option.Filters.Add(new AuthorizeFilter(policy));
-            }).SetCompatibilityVersion(CompatibilityVersion.Latest);
+            })
+                .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.IgnoreNullValues = true;
+                    o.JsonSerializerOptions.IncludeFields = true;
+                    o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
