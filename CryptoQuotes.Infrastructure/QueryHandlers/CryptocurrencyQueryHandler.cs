@@ -17,10 +17,9 @@ namespace CryptoQuotes.Infrastructure.QueryHandlers
 
         public override CryptocurrencyResponse MapEntity(Cryptocurrency entity)
         {
-            var result = Mapper.Map<Cryptocurrency, CryptocurrencyResponse>(entity);
-            
             // t: get only actual quote from db
-            result.CryptoQuote = result.CryptoQuote.Where(cq => cq.IsActual);
+            entity.SetCryptoQuote(entity.CryptoQuote.Where(cq => cq.IsActual));
+            var result = Mapper.Map<Cryptocurrency, CryptocurrencyResponse>(entity);
             return result;
         }
 

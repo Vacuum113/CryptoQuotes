@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Application.UseCases.Queries.CryptoQuoteQuery;
 using Domain.Entities.CryptoQuote;
@@ -11,7 +12,13 @@ namespace Application.UseCases.Queries.CryptocurrencyQuery
         public int CoinMarketCapId { get; init; }
         public string Symbol { get; init; }
         
-        public IEnumerable<CryptoQuoteResponse> CryptoQuote { get; set; }
+        public int CryptoQuoteId { get; init;}
+        public decimal Price { get; init; }
+        public float PercentChangeOneHour { get; init; }
+        public float PercentChangeTwentyFourHours { get; init; }
+        public decimal MarketCap { get; init; }
+        public bool IsActual { get; init; }
+        public DateTime LastUpdated { get; init;}
 
     }
 }
