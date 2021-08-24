@@ -5,14 +5,14 @@ namespace Application.Exceptions
 {
     public class RestException : Exception
     {
-        public RestException(HttpStatusCode code, object errors = null)
+        public RestException(HttpStatusCode code, string error = null)
         {
             Code = code;
-            Errors = errors;
+            Error = error;
         }
 
         public HttpStatusCode Code { get; }
 
-        public object Errors { get; set; }
+        public string Error { get; set; }
     }
 }

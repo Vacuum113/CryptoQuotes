@@ -48,6 +48,13 @@ namespace CryptoQuotes.Infrastructure.QueryHandlers.Abstractions
 
 		public virtual IQueryable<TEntity> Sort(IQueryable<TEntity> query, EntityRequest<TRequest> request)
 		{
+			if (request.Order != null)
+			{
+				if (request.OrderBy != null)
+					query = request.OrderBy == SortOrder.Asc ? query.OrderBy(request.Order) : query.OrderByDesc(request.Order);
+				else
+					query = query.OrderBy(request.Order);	
+			}
 			return query;
 		}
 		

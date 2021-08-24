@@ -5,7 +5,7 @@ namespace Application.UseCases.UserIdentity.Login
 {
     public record LoginQuery : IRequest<UserIdentityModel>
 	{
-		public string Email { get; init; }
+		public string Login { get; init; }
 
 		public string Password { get; init; }
 	}

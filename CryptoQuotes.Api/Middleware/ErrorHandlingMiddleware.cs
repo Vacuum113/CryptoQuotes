@@ -34,31 +34,28 @@ namespace Api.Middleware
 
         private async Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger<ErrorHandlingMiddleware> logger)
         {
-            object errors = null;
+            string error = null;
 
             switch (ex)
             {
                 case RestException rest:
                     logger.LogError(ex, "Rest error");
-                    errors = rest.Errors;
+                    error = rest.Error;
                     context.Response.StatusCode = (int)rest.Code;
                     break;
                 // ReSharper disable once PatternAlwaysOfType
                 case Exception e:
                     logger.LogError(ex, "Server error");
-                    errors = string.IsNullOrWhiteSpace(e.Message) ? "error" : e.Message;
+                    error = string.IsNullOrWhiteSpace(e.Message) ? "error" : e.Message;
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
 
             context.Response.ContentType = "appliation/json";
 
-            if (errors != null)
+            if (error != null)
             {
-                var result = JsonConvert.SerializeObject(new
-                                                             {
-                                                                 errors
-                                                             });
+                var result = JsonConvert.SerializeObject(new { error });
 
                 await context.Response.WriteAsync(result);
             }

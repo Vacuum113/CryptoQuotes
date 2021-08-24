@@ -24,10 +24,10 @@ namespace Application.UseCases.UserIdentity.Login
 
 		public async Task<UserIdentityModel> Handle(LoginQuery request, CancellationToken cancellationToken)
 		{
-			var user = await _identityAppUserRepository.FindByEmailAsync(request.Email);
+			var user = await _identityAppUserRepository.FindByEmailAsync(request.Login);
 			if (user == null)
 			{
-				throw new RestException(HttpStatusCode.Unauthorized);
+				throw new RestException(HttpStatusCode.Unauthorized, "User not found");
 			}
 
 			var result = await _signInManager.SignIn(user.UserName, request.Password);
@@ -37,7 +37,7 @@ namespace Application.UseCases.UserIdentity.Login
 				return new UserIdentityModel(_jwtGenerator.CreateToken(user), user.UserName);
 			}
 
-			throw new RestException(HttpStatusCode.Unauthorized);
+			throw new RestException(HttpStatusCode.Unauthorized, "Wrong email or password");
 		}
 	}
 }

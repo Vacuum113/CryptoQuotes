@@ -23,6 +23,43 @@ namespace CryptoQuotes.Infrastructure.QueryHandlers
             return result;
         }
 
+        public override IQueryable<Cryptocurrency> Sort(IQueryable<Cryptocurrency> query, EntityRequest<CryptocurrencyRequest> request)
+        {
+            switch (request.Order)
+            {
+                case "Price":
+                    query = request.OrderBy != null && request.OrderBy == SortOrder.Asc 
+                        ? query.OrderBy(q => q.CryptoQuote.First(cq => cq.IsActual).Price)
+                        : query.OrderByDescending(q => q.CryptoQuote.First(cq => cq.IsActual).Price);
+                    break;
+                case "PercentChangeOneHour":
+                    query = request.OrderBy != null && request.OrderBy == SortOrder.Asc 
+                        ? query.OrderBy(q => q.CryptoQuote.First(cq => cq.IsActual).PercentChangeOneHour)
+                        : query.OrderByDescending(q => q.CryptoQuote.First(cq => cq.IsActual).PercentChangeOneHour);
+                    break;
+                case "PercentChangeTwentyFourHours":
+                    query = request.OrderBy != null && request.OrderBy == SortOrder.Asc 
+                        ? query.OrderBy(q => q.CryptoQuote.First(cq => cq.IsActual).PercentChangeTwentyFourHours)
+                        : query.OrderByDescending(q => q.CryptoQuote.First(cq => cq.IsActual).PercentChangeTwentyFourHours);
+                    break;
+                case "MarketCap":
+                    query = request.OrderBy != null && request.OrderBy == SortOrder.Asc 
+                        ? query.OrderBy(q => q.CryptoQuote.First(cq => cq.IsActual).MarketCap)
+                        : query.OrderByDescending(q => q.CryptoQuote.First(cq => cq.IsActual).MarketCap);
+                    break;
+                case "LastUpdated":
+                    query = request.OrderBy != null && request.OrderBy == SortOrder.Asc 
+                        ? query.OrderBy(q => q.CryptoQuote.First(cq => cq.IsActual).LastUpdated)
+                        : query.OrderByDescending(q => q.CryptoQuote.First(cq => cq.IsActual).LastUpdated);
+                    break;
+                default:
+                    query = base.Sort(query, request);
+                    break;
+            }
+
+            return query;
+        }
+
         public override IQueryable<Cryptocurrency> GetQuery()
         {
             return base.GetQuery()

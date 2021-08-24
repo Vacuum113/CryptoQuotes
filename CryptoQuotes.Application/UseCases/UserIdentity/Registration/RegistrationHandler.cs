@@ -27,18 +27,14 @@ namespace Application.UseCases.UserIdentity.Registration
 		public async Task<UserIdentityModel> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
 			if ((await _identityAppUserRepository.GetByFilter(x => x.Email == request.Login)).Any())
-			{
-				throw new RestException(HttpStatusCode.BadRequest, new { Error = "Email already exist" });
-			}
+				throw new RestException(HttpStatusCode.BadRequest, "Email already exist");
 
 			var user = _userFactory.Create(new IdentityAppUserFactoryEntity(request.Login, request.Password));
 
-			if (user != null)
-			{
-				return new UserIdentityModel(_jwtGenerator.CreateToken(user), user.UserName);
-			}
-
-			throw new Exception($"Client creation failed.");
+			if (user == null)
+				throw new RestException(HttpStatusCode.BadRequest,"Registration failed.");
+			
+			return new UserIdentityModel(_jwtGenerator.CreateToken(user), user.UserName);
 		}
 	}
 }

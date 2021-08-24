@@ -6,7 +6,7 @@ namespace Application.UseCases.UserIdentity.Login
 	{
 		public LoginQueryValidation()
 		{
-			RuleFor(x => x.Email).NotEmpty();
+			RuleFor(x => x.Login).NotEmpty();
 
 			RuleFor(x => x.Password).NotEmpty();
 		}
