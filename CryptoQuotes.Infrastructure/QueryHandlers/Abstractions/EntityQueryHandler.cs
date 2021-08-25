@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Application.UseCases.Queries.Abstractions;
+using Application.Abstractions.Queries;
 using AutoMapper;
 using Domain.Abstractions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CryptoQuotes.Infrastructure.QueryHandlers.Abstractions

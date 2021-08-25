@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Application.UseCases.Queries.Abstractions;
+using Application.Abstractions.Queries;
 using Application.UseCases.Queries.CryptocurrencyQuery;
 using AutoMapper;
 using CryptoQuotes.Infrastructure.QueryHandlers.Abstractions;

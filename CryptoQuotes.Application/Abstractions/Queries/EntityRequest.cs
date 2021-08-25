@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using MediatR;
-
-namespace Application.UseCases.Queries.Abstractions
+﻿namespace Application.Abstractions.Queries
 {
 	public class EntityRequest<TFilter>
 	{

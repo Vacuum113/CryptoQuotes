@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.Abstractions;
-using MediatR;
+﻿using System.Threading.Tasks;
 
-namespace Application.UseCases.Queries.Abstractions
+namespace Application.Abstractions.Queries
 {
 	public interface IGetManyQueryHandler<TFilter, TResponseEntity>  : IQueryHandler<EntityRequest<TFilter>, GetManyResponse<TResponseEntity>>
 	{

@@ -1,4 +1,4 @@
-using Application.UseCases.Queries.Abstractions;
+using Application.Abstractions.Queries;
 
 namespace Application.UseCases.Queries.CryptocurrencyQuery
 {

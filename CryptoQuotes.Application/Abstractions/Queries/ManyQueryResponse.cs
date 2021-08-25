@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Application.UseCases.Queries.Abstractions
+namespace Application.Abstractions.Queries
 {
     public class GetManyResponse<TResponse>
     {

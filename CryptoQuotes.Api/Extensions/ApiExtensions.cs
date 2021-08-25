@@ -2,9 +2,9 @@ using System.Text;
 using System.Text.Json;
 using Api.Identity;
 using Api.Services;
+using Application;
 using Application.Identity;
 using Application.Interfaces;
-using Application.UseCases.UserIdentity.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -22,10 +22,7 @@ namespace Api
         {
             services.AddControllers(option =>
             {
-                option.EnableEndpointRouting = false;
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 option.Filters.Add(new AuthorizeFilter(policy));
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
@@ -50,7 +47,7 @@ namespace Api
                 }).AddIdentityCookies();
 			
             return services
-                .AddMediatR(typeof(LoginHandler).Assembly)
+                .AddMediatR(typeof(ApplicationExtensions).Assembly)
                 .AddHttpContextAccessor()
                 .AddHttpClient()
                 .AddSwaggerGen()

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Application.UseCases.Queries.Abstractions;
+using Application.Abstractions.Queries;
 using FluentMediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
 using System;
-using Application.UseCases.Queries.Abstractions;
+using Application.Abstractions.Queries;
 using Application.UseCases.Queries.CryptocurrencyQuery;
 using CryptoQuotes.Infrastructure.QueryHandlers;
 using FluentMediator;
