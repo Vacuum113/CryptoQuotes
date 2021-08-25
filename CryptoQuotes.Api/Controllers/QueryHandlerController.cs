@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Api.Presenters;
 using Application.Abstractions.Queries;
 using FluentMediator;
 using Microsoft.AspNetCore.Authorization;
@@ -9,16 +10,13 @@ namespace Api.Controllers
     [Authorize]
     public class QueryHandlerController<TFilter, TResponse> : BaseController
     {
-        protected readonly IMediator Mediator;
 
-        public QueryHandlerController(IMediator mediator)
-        {
-            Mediator = mediator;
-        }
-
+        public QueryHandlerController(IMediator mediator) : base(mediator)
+        { }
+        
         [HttpGet("")]
         public virtual async Task<IActionResult> GetMany([FromQuery] int? start, [FromQuery] int? end,
-            [FromQuery] string order, [FromQuery] SortOrder orderBy, [FromQuery] TFilter filter)
+            [FromQuery] string order, [FromQuery] SortOrder orderBy, [FromQuery] TFilter filter, [FromServices] SimpleOutputPresenter outputPresenter)
         {
             var request = new EntityRequest<TFilter>()
             {
@@ -30,7 +28,9 @@ namespace Api.Controllers
             };
 
             var result = await Mediator.SendAsync<GetManyResponse<TResponse>>(request);
-
+            if (result == null)
+                return outputPresenter.Result;
+            
             return Ok(result);
         }
     }

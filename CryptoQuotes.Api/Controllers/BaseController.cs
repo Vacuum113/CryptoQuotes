@@ -1,18 +1,16 @@
-﻿using Api.Helpers;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
+using FluentMediator;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     public class BaseController : ControllerBase
     {
-        private IMediator _mediator;
+        protected readonly IMediator Mediator;
 
-        protected IMediator Mediator => _mediator ?? (_mediator = HttpContext.RequestServices.GetService<IMediator>());
-        
-        protected IActionResult Json(object o)
-            => new JsonActionResult(o);
+        public BaseController(IMediator mediator)
+        {
+            Mediator = mediator;
+        }
     }
 }

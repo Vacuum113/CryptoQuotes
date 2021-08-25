@@ -1,9 +1,8 @@
-﻿using Application.UseCases.User;
-using MediatR;
+﻿using Application.Abstractions.UseCases;
 
 namespace Application.UseCases.UserIdentity.Login
 {
-    public record LoginQuery : IRequest<UserIdentityModel>
+    public record LoginRequest : IRequest
 	{
 		public string Login { get; init; }
 

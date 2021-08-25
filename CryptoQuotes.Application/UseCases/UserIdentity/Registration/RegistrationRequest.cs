@@ -1,9 +1,8 @@
-﻿using Application.UseCases.User;
-using MediatR;
+﻿using Application.Abstractions.UseCases;
 
 namespace Application.UseCases.UserIdentity.Registration
 {
-	public record RegistrationCommand : IRequest<UserIdentityModel>
+	public record RegistrationRequest : IRequest
 	{
 		public string Login { get; init; }
 		
