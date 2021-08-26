@@ -6,8 +6,6 @@ using Application.Abstractions.UseCases;
 using Application.Identity;
 using Application.Interfaces;
 using Domain.Entities.IdentityAppUser;
-using FluentValidation.Validators;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.UseCases.UserIdentity.Registration
 {

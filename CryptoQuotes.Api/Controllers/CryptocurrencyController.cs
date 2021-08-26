@@ -1,11 +1,6 @@
-﻿using System.Threading.Tasks;
-using Application.UseCases.Queries.CryptocurrencyQuery;
-using Application.UseCases.User;
-using Application.UseCases.UserIdentity;
-using Application.UseCases.UserIdentity.Login;
+﻿using Application.UseCases.Queries.CryptocurrencyQuery;
 using FluentMediator;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
