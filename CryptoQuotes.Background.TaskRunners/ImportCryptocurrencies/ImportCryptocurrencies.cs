@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CryptoQuotes.Background.Entities;
+using CryptoQuotes.Background.Entities.RepeatingTask;
 using Domain;
+using Domain.Abstractions;
 using Domain.Entities.Cryptocurrency;
 using Domain.Entities.CryptoQuote;
 using Microsoft.Extensions.Options;
@@ -19,70 +22,105 @@ namespace CryptoQuotes.Background.TaskRunners.ImportCryptocurrencies
         private readonly ICryptocurrencyRepository _cryptocurrencyRepository;
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
         private readonly ICryptoQuoteRepository _cryptoQuoteRepository;
+        private readonly IRepeatingTaskRepository _repeatingTaskRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private static readonly TimeSpan TimeBetweenRuns = TimeSpan.FromHours(1);
 
         public ImportCryptocurrenciesTaskRunner(ICryptoQuotesProvider provider, ICryptocurrencyRepository cryptocurrencyRepository, 
-            IUnitOfWorkFactory unitOfWorkFactory, ICryptoQuoteRepository cryptoQuoteRepository)
+            IUnitOfWorkFactory unitOfWorkFactory, ICryptoQuoteRepository cryptoQuoteRepository, 
+            IRepeatingTaskRepository repeatingTaskRepository, IDateTimeProvider dateTimeProvider)
         {
             _provider = provider;
             _cryptocurrencyRepository = cryptocurrencyRepository;
             _unitOfWorkFactory = unitOfWorkFactory;
             _cryptoQuoteRepository = cryptoQuoteRepository;
+            _repeatingTaskRepository = repeatingTaskRepository;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public async Task<TimeSpan> Run(CancellationToken stoppingToken)
         {
-            // todo refactoring
+            var (canExecute, task) = await CanExecuteTask();
+            if (!canExecute)
+                return TimeBetweenRuns;
+            
             var result = await _provider.GetLatest();
             if (result.Status.ErrorCode != ResponseStatusCode.Success)
                 return TimeBetweenRuns;
 
-            var cryptocurrencies = new List<Cryptocurrency>();
-            foreach (var cc in result.Data)
-                cryptocurrencies.Add(CreateNewCC(cc));
+            using var unitOfWork = _unitOfWorkFactory.Create();
 
-            var ccs = (await _cryptocurrencyRepository.All()).ToList();
+            await ProcessingCryptocurrencyResponse(result);
+
+            UpdateTask(task);
+            
+            await unitOfWork.Apply();
+
+            return TimeBetweenRuns;
+        }
+
+        private void UpdateTask(RepeatingTask task)
+        {
+            task.SetExecuteDate(_dateTimeProvider.Now.AddHours(1));
+        }
+
+        private async Task<(bool canExecute, RepeatingTask task)> CanExecuteTask()
+        {
+            var now = _dateTimeProvider.Now;
+            var task = await _repeatingTaskRepository.GetByTypeLatest(RepeatingTaskType.ImportCryptocurrency);
+            return (task != null && task.ExecuteDate <= now, task);
+        }
+
+        private async Task ProcessingCryptocurrencyResponse(СryptocurrencyResponse result)
+        {
+            var cryptocurrencies = CreateCcFromCcResponse(result);
+
+            var currentCcs = (await _cryptocurrencyRepository.All()).ToList();
             var updatedCc = new List<Cryptocurrency>();
             var addedCq = new List<CryptoQuote>();
             var addedCc = new List<Cryptocurrency>();
             
-            using var unitOfWork = _unitOfWorkFactory.Create();
-            
-            foreach (var cc in cryptocurrencies)
+            foreach (var newCryptocurrency in cryptocurrencies)
             {
-                var existCc = ccs.FirstOrDefault(c => c.CoinMarketCapId == cc.CoinMarketCapId);
+                var existCc = currentCcs.FirstOrDefault(c => c.CoinMarketCapId == newCryptocurrency.CoinMarketCapId);
                 if (existCc != null)
-                {
-                    if (TryUpdateCryptocurrency(existCc, cc))
-                        updatedCc.Add(existCc);
-
-                    var actualCq = existCc.CryptoQuote.First(cq => cq.IsActual == true);
-                    if (actualCq.LastUpdated == cc.CryptoQuote.First().LastUpdated)
-                        continue;
-                    
-                    actualCq.Deactivate();
-                    
-                    var cryptoQuote = cc.CryptoQuote.First();
-                    cryptoQuote.SetCryptocurrency(existCc);
-                    cryptoQuote.Activate();
-
-                    addedCq.Add(cryptoQuote);
-                }
+                    UpdateCc(existCc, newCryptocurrency, updatedCc, addedCq);
                 else
-                {
-                    cc.CryptoQuote.First().Activate();
-                    addedCc.Add(cc);
-                }
-
+                    AddCc(newCryptocurrency, addedCc);
             }
 
             await _cryptocurrencyRepository.UpdateRange(updatedCc);
             await _cryptocurrencyRepository.AddRange(addedCc);
             await _cryptoQuoteRepository.AddRange(addedCq);
+        }
 
-            await unitOfWork.Apply();
-            
-            return TimeBetweenRuns;
+        private void AddCc(Cryptocurrency newCryptocurrency, List<Cryptocurrency> addedCc)
+        {
+            newCryptocurrency.CryptoQuote.First().Activate();
+            addedCc.Add(newCryptocurrency);
+        }
+
+        private void UpdateCc(Cryptocurrency existCc, Cryptocurrency newCryptocurrency, List<Cryptocurrency> updatedCc, List<CryptoQuote> addedCq)
+        {
+            if (TryUpdateCryptocurrency(existCc, newCryptocurrency))
+                updatedCc.Add(existCc);
+
+            var actualCq = existCc.CryptoQuote.First(cq => cq.IsActual == true);
+            if (actualCq.LastUpdated == newCryptocurrency.CryptoQuote.First().LastUpdated)
+                return;
+                    
+            actualCq.Deactivate();
+                    
+            var cryptoQuote = newCryptocurrency.CryptoQuote.First();
+            cryptoQuote.SetCryptocurrency(existCc);
+            cryptoQuote.Activate();
+
+            addedCq.Add(cryptoQuote);
+        }
+
+        private List<Cryptocurrency> CreateCcFromCcResponse(СryptocurrencyResponse result)
+        {
+            return result.Data.Select(cc => CreateNewCC(cc)).ToList();
         }
 
         private bool TryUpdateCryptocurrency(Cryptocurrency existCc, Cryptocurrency cc)

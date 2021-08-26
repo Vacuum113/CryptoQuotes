@@ -1,5 +1,7 @@
 ﻿using Application.Identity;
 using Application.UseCases.Queries.CryptocurrencyQuery;
+using CryptoQuotes.Background.Entities;
+using CryptoQuotes.Background.Entities.RepeatingTask;
 using CryptoQuotes.Infrastructure.Identity;
 using CryptoQuotes.Infrastructure.QueryHandlers;
 using CryptoQuotes.Infrastructure.Repositories;
@@ -49,6 +51,7 @@ namespace CryptoQuotes.Infrastructure
 					.AddScoped<IAppUserRepository, AppUserRepository>()
 					.AddScoped<ICryptocurrencyRepository, CryptocurrencyRepository>()
 					.AddScoped<ICryptoQuoteRepository, CryptoQuoteRepository>()
+					.AddScoped<IRepeatingTaskRepository, RepeatingTaskRepository>()
 				;
 		}
 		

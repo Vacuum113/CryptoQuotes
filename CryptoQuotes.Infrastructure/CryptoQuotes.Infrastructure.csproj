@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CryptoQuotes.Application\CryptoQuotes.Application.csproj" />
+    <ProjectReference Include="..\CryptoQuotes.Background\CryptoQuotes.Background.csproj" />
     <ProjectReference Include="..\CryptoQuotes.Domain\CryptoQuotes.Domain.csproj" />
   </ItemGroup>
 

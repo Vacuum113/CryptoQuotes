@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CryptoQuotes.Background.Entities;
+using CryptoQuotes.Background.Entities.RepeatingTask;
 using CryptoQuotes.Infrastructure.Identity;
 using Domain;
 using Domain.Entities.AppUser;
@@ -17,6 +19,7 @@ namespace CryptoQuotes.Infrastructure
 
         public DbSet<User> AppUsers { get; set; }
         public DbSet<IdentityAppUser> IdentityAppUsers { get; set; }
+        public DbSet<RepeatingTask> RepeatingTasks { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
