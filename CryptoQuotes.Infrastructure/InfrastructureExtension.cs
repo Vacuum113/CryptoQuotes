@@ -5,7 +5,9 @@ using CryptoQuotes.Background.Entities.RepeatingTask;
 using CryptoQuotes.Infrastructure.Identity;
 using CryptoQuotes.Infrastructure.QueryHandlers;
 using CryptoQuotes.Infrastructure.Repositories;
+using CryptoQuotes.Infrastructure.Services;
 using Domain;
+using Domain.Abstractions;
 using Domain.Entities.AppUser;
 using Domain.Entities.Cryptocurrency;
 using Domain.Entities.CryptoQuote;
@@ -40,7 +42,8 @@ namespace CryptoQuotes.Infrastructure
 				.AddScoped<IUnitOfWorkFactory>(f => f.GetRequiredService<DataContext>())
 				.AddScoped<ISignInManager, SignInManager>()
 				.AddRepositories()
-				.AddFactories();
+				.AddFactories()
+				.AddServices();
 		}
 		
 		
@@ -60,6 +63,12 @@ namespace CryptoQuotes.Infrastructure
 			return services
 					.AddScoped<IIdentityAppUserFactory, EntitiesFactory>()
 				;
+		}
+
+		private static IServiceCollection AddServices(this IServiceCollection services)
+		{
+			return services
+				.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		}
 	}
 }

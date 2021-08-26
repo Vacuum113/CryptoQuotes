@@ -5,6 +5,8 @@ using CryptoQuotes.Background.Entities.RepeatingTask;
 using CryptoQuotes.Infrastructure.Identity;
 using Domain;
 using Domain.Entities.AppUser;
+using Domain.Entities.Cryptocurrency;
+using Domain.Entities.CryptoQuote;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,8 @@ namespace CryptoQuotes.Infrastructure
 
         public DbSet<User> AppUsers { get; set; }
         public DbSet<IdentityAppUser> IdentityAppUsers { get; set; }
+        public DbSet<Cryptocurrency> Cryptocurrencies { get; set; }
+        public DbSet<CryptoQuote> CryptoQuotes { get; set; }
         public DbSet<RepeatingTask> RepeatingTasks { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
