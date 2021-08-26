@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.Abstractions.Queries;
 using AutoMapper;
 using Domain.Abstractions;
+using Domain.Abstractions.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CryptoQuotes.Infrastructure.QueryHandlers.Abstractions

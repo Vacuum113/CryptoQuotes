@@ -1,5 +1,6 @@
 using System;
 using Domain.Abstractions;
+using Domain.Abstractions.Entity;
 
 namespace Domain.Entities.CryptoQuote
 {

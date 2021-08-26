@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Domain.Abstractions;
+using Domain.Abstractions.Entity;
 using Domain.Entities.IdentityAppUser;
 
 namespace Domain.Entities.AppUser

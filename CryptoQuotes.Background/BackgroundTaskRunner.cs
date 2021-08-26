@@ -24,12 +24,10 @@ namespace CryptoQuotes.Background
             {
                 try
                 {
-                    TimeSpan span;
-
                     using var scope = _serviceProvider.CreateScope();
 
                     var runner = scope.ServiceProvider.GetRequiredService<TRunner>();
-                    span = await runner.Run(stoppingToken);
+                    var span = await runner.Run(stoppingToken);
                     
                     await Task.Delay(span, stoppingToken);
                 }
@@ -40,6 +38,7 @@ namespace CryptoQuotes.Background
                 }
                 catch (Exception e)
                 {
+                    // todo: exception logging
                 }
             }
         }

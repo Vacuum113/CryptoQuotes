@@ -17,9 +17,4 @@
     <ProjectReference Include="..\CryptoQuotes.Domain\CryptoQuotes.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MappedResponses" />
-    <Folder Include="Services" />
-  </ItemGroup>
-
 </Project>

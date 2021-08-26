@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Domain.Abstractions;
+using Domain.Abstractions.Entity;
 using Domain.Abstractions.Repository;
 using Microsoft.EntityFrameworkCore;
 

@@ -19,6 +19,5 @@ namespace Application.UseCases.Queries.CryptocurrencyQuery
         public decimal MarketCap { get; init; }
         public bool IsActual { get; init; }
         public DateTime LastUpdated { get; init;}
-
     }
 }

@@ -17,7 +17,7 @@ namespace CryptoQuotes.Infrastructure.QueryHandlers
 
         public override CryptocurrencyResponse MapEntity(Cryptocurrency entity)
         {
-            // t: get only actual quote from db
+            // todo: get only actual quote from db
             entity.SetCryptoQuote(entity.CryptoQuote.Where(cq => cq.IsActual));
             var result = Mapper.Map<Cryptocurrency, CryptocurrencyResponse>(entity);
             return result;
@@ -25,6 +25,7 @@ namespace CryptoQuotes.Infrastructure.QueryHandlers
 
         public override IQueryable<Cryptocurrency> Sort(IQueryable<Cryptocurrency> query, EntityRequest<CryptocurrencyRequest> request)
         {
+            // todo: create join from db and use joined entity
             switch (request.Order)
             {
                 case "Price":

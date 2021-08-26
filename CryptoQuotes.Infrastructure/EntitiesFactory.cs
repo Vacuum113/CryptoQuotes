@@ -1,5 +1,5 @@
+using CryptoQuotes.Background.Entities.RepeatingTask;
 using CryptoQuotes.Infrastructure.Identity;
-using Domain.Abstractions.Factory;
 using Domain.Entities.IdentityAppUser;
 using Microsoft.AspNetCore.Identity;
 
